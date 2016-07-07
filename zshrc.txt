@@ -1,0 +1,6 @@
+sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+
+# $ vim ~/.oh-my-zsh/lib/history.zsh
+# alias history='fc -il 1'
+
+# https://github.com/zsh-users/zsh-completions
