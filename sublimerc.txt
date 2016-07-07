@@ -1,0 +1,21 @@
+{
+    "color_scheme": "Packages/Color Scheme - Default/Solarized (Light).tmTheme",
+    "font_face": "DejaVu Sans Mono",
+    "font_size": 11,
+    "rulers": [80],
+
+    "line_numbers": true,
+
+    "rulers": [80],
+
+    "tab_size": 4,
+    "translate_tabs_to_spaces": true,
+
+    "detect_indentation": true,
+    "auto_indent": true,
+    "smart_indent": true,
+
+    "trim_automatic_white_space": true,
+
+    "word_wrap": "auto"
+}
