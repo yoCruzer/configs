@@ -1,0 +1,96 @@
+
+# Source global definitions
+if [ -f /etc/bashrc ]; then
+    . /etc/bashrc
+fi
+export PATH="/usr/local/bin:$PATH"
+
+#Golang
+export GOROOT=/usr/local/go
+export GOPATH=$HOME/go_space
+export PATH=$GOROOT/bin:$GOPATH/bin:$PATH
+
+#Bash history
+export HISTFILESIZE=999999
+export HISTSIZE=999999
+shopt -s histappend
+HISTTIMEFORMAT="@%F_%T "
+export HISTTIMEFORMAT
+
+#MySQL
+export MYSQL_PS1="\u@\h [\d]> "
+
+#urldecode/urlencode
+alias urldecode='python -c "import sys, urllib as ul; \
+    print ul.unquote_plus(sys.argv[1])"'
+
+alias urlencode='python -c "import sys, urllib as ul; \
+    print ul.quote_plus(sys.argv[1])"'
+
+#rot13 encode
+alias rot13="tr 'a-zA-Z' 'n-za-mN-ZA-M'"
+
+mcd() { mkdir -p "$1"; cd "$1"; }
+mtoday() { mkdir -p "$HOME/$(date +%Y_%B)/$(date +%Y-%-m-%-d)"; cd "$HOME/$(date +%Y_%B)/$(date +%Y-%-m-%-d)"; }
+backup() { cp "$1"{,.bak}; }
+md5check() { md5sum "$1" | grep "$2"; }
+sha1check() { sha1sum "$1" | grep "$2"; }
+
+md5dir() {
+    if [ -d "$1" ]; then
+        path=$(readlink -f "$1")
+        save_name=$(date +%Y%m%d)$(echo "$path" | tr '/' '_')
+        find "$path" -type f -print0 | xargs -0 md5sum > "$save_name".md5
+    else
+        echo "'$1' is not a directory !!!"
+    fi
+}
+
+convertsecs2hms() {
+    ((h=${1}/3600))
+    ((m=(${1}%3600)/60))
+    ((s=${1}%60))
+    # printf "%02d:%02d:%02d\n" $h $m $s
+    printf "%02dh %02dm %02ds\n" $h $m $s
+}
+
+displayseconds {
+    local T=$1
+    local D=$((T/60/60/24))
+    local H=$((T/60/60%24))
+    local M=$((T/60%60))
+    local S=$((T%60))
+    (( $D > 0 )) && printf '%d days ' $D
+    (( $H > 0 )) && printf '%d hours ' $H
+    (( $M > 0 )) && printf '%d minutes ' $M
+    (( $D > 0 || $H > 0 || $M > 0 )) && printf 'and '
+    printf '%d seconds\n' $S
+}
+
+extract() {
+    if [ -f $1 ] ; then
+      case $1 in
+        *.tar.bz2)   tar xjf $1     ;;
+        *.tar.gz)    tar xzf $1     ;;
+        *.bz2)       bunzip2 $1     ;;
+        *.rar)       unrar e $1     ;;
+        *.gz)        gunzip $1      ;;
+        *.tar)       tar xf $1      ;;
+        *.tbz2)      tar xjf $1     ;;
+        *.tgz)       tar xzf $1     ;;
+        *.zip)       unzip $1       ;;
+        *.Z)         uncompress $1  ;;
+        *.7z)        7z x $1        ;;
+        *) echo "'$1' cannot be extracted via extract()" ;;
+      esac
+    else
+        echo "'$1' is not a valid file"
+    fi
+}
+
+#Not classified
+alias listen='netstat -lntp'
+alias listen2='sudo lsof -P -i -n'
+alias wuliao='man $(ls /bin | shuf | head -1)'
+alias dirtree="ls -R | grep ":$" | sed -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's/^/   /' -e 's/-/|/'"
+
