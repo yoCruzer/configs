@@ -1,0 +1,8 @@
+#Reference:
+https://github.com/search?o=desc&p=3&q=dotfile&s=stars&type=Repositories&utf8=%E2%9C%93
+https://github.com/webpro/awesome-dotfiles
+https://github.com/mathiasbynens/dotfiles
+https://github.com/holman/dotfiles
+https://github.com/thoughtbot/dotfiles
+
+https://amix.dk/vim/vimrc.txt
