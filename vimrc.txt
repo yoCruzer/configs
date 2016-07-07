@@ -1,0 +1,141 @@
+ab iauthor Author: _zero(http://crazyof.me/)
+
+if v:lang =~ "utf8$" || v:lang =~ "UTF-8$"
+   set fileencodings=ucs-bom,utf-8,latin1
+endif
+
+set nocompatible    " Use Vim defaults (much better!)
+set bs=indent,eol,start     " allow backspacing over everything in insert mode
+"set ai         " always set autoindenting on
+"set backup     " keep a backup file
+set viminfo='20,\"50    " read/write a .viminfo file, don't store more
+            " than 50 lines of registers
+
+" Only do this part when compiled with support for autocommands
+if has("autocmd")
+  augroup redhat
+  autocmd!
+  " In text files, always limit the width of text to 78 characters
+  " autocmd BufRead *.txt set tw=78
+  " When editing a file, always jump to the last cursor position
+  autocmd BufReadPost *
+  \ if line("'\"") > 0 && line ("'\"") <= line("$") |
+  \   exe "normal! g'\"" |
+  \ endif
+  " don't write swapfile on most commonly used directories for NFS mounts or USB sticks
+  autocmd BufNewFile,BufReadPre /media/*,/run/media/*,/mnt/* set directory=~/tmp,/var/tmp,/tmp
+  " start with spec file template
+  autocmd BufNewFile *.spec 0r /usr/share/vim/vimfiles/template.spec
+  augroup END
+endif
+
+if has("cscope") && filereadable("/usr/bin/cscope")
+   set csprg=/usr/bin/cscope
+   set csto=0
+   set cst
+   set nocsverb
+   " add any database in current directory
+   if filereadable("cscope.out")
+      cs add $PWD/cscope.out
+   " else add database pointed to by environment
+   elseif $CSCOPE_DB != ""
+      cs add $CSCOPE_DB
+   endif
+   set csverb
+endif
+
+" Switch syntax highlighting on, when the terminal has colors
+" Also switch on highlighting the last used search pattern.
+if &t_Co > 2 || has("gui_running")
+  syntax on
+  set hlsearch
+endif
+
+if &term=="xterm"
+     set t_Co=8
+     set t_Sb=[4%dm
+     set t_Sf=[3%dm
+endif
+
+" Don't wake up system with blinking cursor:
+" http://www.linuxpowertop.org/known.php
+let &guicursor = &guicursor . ",a:blinkon0"
+
+" ==== ==== ==== ==== "
+
+syntax on
+set fileencoding=utf-8
+set encoding=utf-8
+set number
+
+set ignorecase
+set hlsearch
+set incsearch
+
+set expandtab
+set tabstop=4
+set shiftwidth=4
+set softtabstop=4
+
+set smartindent
+set autoindent
+set cindent
+
+set history=50      " keep 50 lines of command line history
+set ruler       " show the cursor position all the time
+"set cursorline
+
+set showcmd
+set showmatch
+set autoread
+set autowrite
+
+filetype on
+filetype plugin on
+filetype indent on
+
+set nobackup
+set noswapfile
+set nowb
+
+set background=dark
+colorscheme desert
+
+""将Tab替换为4空格
+:nmap tt :%s/\t/    /g<CR>
+
+""在 Tab页 之间切换
+:map <F2> :tabp<CR>
+:map <F3> :tabn<CR>
+
+"去空行
+:nnoremap <F4> :g/^\s*$/d<CR>
+
+""在(normal/insert模式下)按F5插入当前时间
+:nnoremap <F5> "=strftime("%F %R")<CR>gP
+:inoremap <F5> <C-R>=strftime("%F %R")<CR>
+
+"全文格式化
+:map <F12> gg=G
+
+""Smart way to move between split windows
+map <C-j> <C-W>j
+map <C-k> <C-W>k
+map <C-h> <C-W>h
+map <C-l> <C-W>l
+
+"Set mapleader
+let mapleader=","
+
+""快速重新载入/etc/vimrc
+map <silent> <leader>ss :source /etc/vimrc<cr>
+
+""快速重新编辑/etc/vimrc
+map <silent> <leader>ee :e /etc/vimrc<cr>
+
+""快速新建Tab
+nnoremap <leader>n :tabnew<cr>
+
+""快速sudo保存
+noremap <silent> <leader>ww :w !sudo tee %<cr>
+
